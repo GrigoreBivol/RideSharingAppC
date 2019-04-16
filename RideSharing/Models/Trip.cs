@@ -19,8 +19,8 @@ namespace RideSharing.Models
         public int TripId { get; set; }
 
 
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddThh:mm:ss}")]
+        [Display(Name ="Date and Time")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd HH:mm}")]
         public DateTime TimeStamp { get; set; }
 
         [Display(Name = "Total")]
