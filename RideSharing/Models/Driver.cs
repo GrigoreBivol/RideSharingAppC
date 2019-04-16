@@ -9,12 +9,12 @@ namespace RideSharing.Models
     public class Driver
     {
 
-        //test github ..mnmnn 
+        //test github
         
 
         public Driver()
         {
-            Online = false;
+            OnLine = false;
             OnRide = false;
         }
 
@@ -23,7 +23,7 @@ namespace RideSharing.Models
         public int DriverId { get; set; }
         public string DriverIdentity { get; set; }
         public string Name { get; set; }
-        public bool Online { get; set; }
+        public bool OnLine { get; set; }
         public bool OnRide { get; set; }
         public virtual ICollection<Trip> Trips { get; set; }
 
