@@ -98,7 +98,7 @@ namespace RideSharing.Controllers
         /// GET: Create trip
 
         [HttpGet]
-        [Authorize(Roles = "Passenger")]
+       // [Authorize(Roles = "Passenger")]
         public ActionResult Create()
         {
             ViewBag.DriverId = new SelectList(db.Drivers, "DriverIdentity", "Name");
@@ -109,7 +109,7 @@ namespace RideSharing.Controllers
 
         // POST: Create new trip
         [HttpPost]
-        [Authorize(Roles = "Passenger")]
+       // [Authorize(Roles = "Passenger")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "TripId,TimeStamp,Total,Commission,OriginAddress,DestAddress,IsCompleted,DriverIdentity,PassengerIdentity")] Trip trip)
         {

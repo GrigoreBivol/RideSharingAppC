@@ -199,13 +199,14 @@
     <Compile Include="Controllers\DriversController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\PassengersController.cs" />
     <Compile Include="Controllers\TripsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201904161448390_Initial.cs" />
-    <Compile Include="Migrations\201904161448390_Initial.Designer.cs">
-      <DependentUpon>201904161448390_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201904161736124_Initial.cs" />
+    <Compile Include="Migrations\201904161736124_Initial.Designer.cs">
+      <DependentUpon>201904161736124_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -310,11 +311,16 @@
     <Content Include="Views\Drivers\Details.cshtml" />
     <Content Include="Views\Drivers\Edit.cshtml" />
     <Content Include="Views\Drivers\Index.cshtml" />
-    <Content Include="Views\Trips\Create.cshtml" />
     <Content Include="Views\Trips\Delete.cshtml" />
     <Content Include="Views\Trips\Details.cshtml" />
     <Content Include="Views\Trips\Edit.cshtml" />
     <Content Include="Views\Trips\Index.cshtml" />
+    <Content Include="Views\Passengers\Create.cshtml" />
+    <Content Include="Views\Passengers\Delete.cshtml" />
+    <Content Include="Views\Passengers\Details.cshtml" />
+    <Content Include="Views\Passengers\Edit.cshtml" />
+    <Content Include="Views\Passengers\Index.cshtml" />
+    <Content Include="Views\Trips\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -331,8 +337,8 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201904161448390_Initial.resx">
-      <DependentUpon>201904161448390_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201904161736124_Initial.resx">
+      <DependentUpon>201904161736124_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

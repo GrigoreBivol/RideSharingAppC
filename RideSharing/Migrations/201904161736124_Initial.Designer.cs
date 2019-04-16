@@ -13,7 +13,7 @@ namespace RideSharing.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201904161448390_Initial"; }
+            get { return "201904161736124_Initial"; }
         }
         
         string IMigrationMetadata.Source

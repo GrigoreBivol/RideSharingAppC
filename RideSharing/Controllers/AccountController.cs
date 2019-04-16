@@ -138,8 +138,8 @@ namespace RideSharing.Controllers
 
         //
         // GET: /Account/Register
-        // [AllowAnonymous]
-        [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
+        //[Authorize(Roles = "Admin")]
         public ActionResult Register()
         {
             ViewBag.Name = new SelectList(_context.Roles.Where(u => !u.Name.Contains("Admin")).ToList(), "Name", "Name");
@@ -149,8 +149,8 @@ namespace RideSharing.Controllers
         //
         // POST: /Account/Register
         [HttpPost]
-        // [AllowAnonymous]     - removed allow anonymous
-        [Authorize(Roles = "Admin")]
+        [AllowAnonymous]     
+        //[Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model, Driver driver, Passenger passenger)
         {
@@ -187,7 +187,7 @@ namespace RideSharing.Controllers
                     
                     
 
-                    return RedirectToAction("Index", "Users");
+                    return RedirectToAction("Index", "Home");
                 }
 
                 ViewBag.Name = new SelectList(_context.Roles.Where(u => !u.Name.Contains("Admin")).ToList(), "Name", "Name"); 
