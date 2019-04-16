@@ -199,6 +199,7 @@
     <Compile Include="Controllers\DriversController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\TripsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -209,6 +210,10 @@
     <Compile Include="Migrations\201904021428166_Initial1.cs" />
     <Compile Include="Migrations\201904021428166_Initial1.Designer.cs">
       <DependentUpon>201904021428166_Initial1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904161428173_Migation2.cs" />
+    <Compile Include="Migrations\201904161428173_Migation2.Designer.cs">
+      <DependentUpon>201904161428173_Migation2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -312,6 +317,11 @@
     <Content Include="Views\Drivers\Details.cshtml" />
     <Content Include="Views\Drivers\Edit.cshtml" />
     <Content Include="Views\Drivers\Index.cshtml" />
+    <Content Include="Views\Trips\Create.cshtml" />
+    <Content Include="Views\Trips\Delete.cshtml" />
+    <Content Include="Views\Trips\Details.cshtml" />
+    <Content Include="Views\Trips\Edit.cshtml" />
+    <Content Include="Views\Trips\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -327,6 +337,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201904021428166_Initial1.resx">
       <DependentUpon>201904021428166_Initial1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904161428173_Migation2.resx">
+      <DependentUpon>201904161428173_Migation2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

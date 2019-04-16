@@ -9,15 +9,18 @@ namespace RideSharing.Models
     public class Passenger
     {
         [Key]
-        public int Id { get; set; }
+        public int PassengerId { get; set; }
         public string PassengerIdentity { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
+        public bool OnLine { get; set; }
 
+        public virtual ICollection<Trip> Trips { get; set; }
 
         public Passenger()
         {
+            OnLine = false;
         }
     }
 }
