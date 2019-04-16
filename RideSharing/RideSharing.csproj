@@ -203,17 +203,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201904021321092_Initial.cs" />
-    <Compile Include="Migrations\201904021321092_Initial.Designer.cs">
-      <DependentUpon>201904021321092_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201904021428166_Initial1.cs" />
-    <Compile Include="Migrations\201904021428166_Initial1.Designer.cs">
-      <DependentUpon>201904021428166_Initial1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201904161428173_Migation2.cs" />
-    <Compile Include="Migrations\201904161428173_Migation2.Designer.cs">
-      <DependentUpon>201904161428173_Migation2.cs</DependentUpon>
+    <Compile Include="Migrations\201904161448390_Initial.cs" />
+    <Compile Include="Migrations\201904161448390_Initial.Designer.cs">
+      <DependentUpon>201904161448390_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -250,6 +242,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="ClassDiagram1.cd" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -332,21 +325,15 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201904021321092_Initial.resx">
-      <DependentUpon>201904021321092_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904021428166_Initial1.resx">
-      <DependentUpon>201904021428166_Initial1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904161428173_Migation2.resx">
-      <DependentUpon>201904161428173_Migation2.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201904161448390_Initial.resx">
+      <DependentUpon>201904161448390_Initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

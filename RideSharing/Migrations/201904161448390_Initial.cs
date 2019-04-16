@@ -12,8 +12,9 @@ namespace RideSharing.Migrations
                 c => new
                     {
                         DriverId = c.Int(nullable: false, identity: true),
+                        DriverIdentity = c.String(),
                         Name = c.String(),
-                        Online = c.Boolean(nullable: false),
+                        OnLine = c.Boolean(nullable: false),
                         OnRide = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.DriverId);
@@ -30,25 +31,26 @@ namespace RideSharing.Migrations
                         DestAddress = c.String(),
                         IsCompleted = c.Boolean(nullable: false),
                         Driver_DriverId = c.Int(),
-                        Passenger_Id = c.Int(),
+                        Passenger_PassengerId = c.Int(),
                     })
                 .PrimaryKey(t => t.TripId)
                 .ForeignKey("dbo.Drivers", t => t.Driver_DriverId)
-                .ForeignKey("dbo.Passengers", t => t.Passenger_Id)
+                .ForeignKey("dbo.Passengers", t => t.Passenger_PassengerId)
                 .Index(t => t.Driver_DriverId)
-                .Index(t => t.Passenger_Id);
+                .Index(t => t.Passenger_PassengerId);
             
             CreateTable(
                 "dbo.Passengers",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
-                        FirstName = c.String(),
-                        LastName = c.String(),
+                        PassengerId = c.Int(nullable: false, identity: true),
+                        PassengerIdentity = c.String(),
+                        Name = c.String(),
                         Address = c.String(),
                         City = c.String(),
+                        OnLine = c.Boolean(nullable: false),
                     })
-                .PrimaryKey(t => t.Id);
+                .PrimaryKey(t => t.PassengerId);
             
             CreateTable(
                 "dbo.AspNetRoles",
@@ -141,7 +143,7 @@ namespace RideSharing.Migrations
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.TripReviews", "Trip_TripId", "dbo.Trips");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
-            DropForeignKey("dbo.Trips", "Passenger_Id", "dbo.Passengers");
+            DropForeignKey("dbo.Trips", "Passenger_PassengerId", "dbo.Passengers");
             DropForeignKey("dbo.Trips", "Driver_DriverId", "dbo.Drivers");
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
@@ -150,7 +152,7 @@ namespace RideSharing.Migrations
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
-            DropIndex("dbo.Trips", new[] { "Passenger_Id" });
+            DropIndex("dbo.Trips", new[] { "Passenger_PassengerId" });
             DropIndex("dbo.Trips", new[] { "Driver_DriverId" });
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
