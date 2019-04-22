@@ -208,6 +208,18 @@
     <Compile Include="Migrations\201904161736124_Initial.Designer.cs">
       <DependentUpon>201904161736124_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201904221632497_Initial2.cs" />
+    <Compile Include="Migrations\201904221632497_Initial2.Designer.cs">
+      <DependentUpon>201904221632497_Initial2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904221801372_Initial3.cs" />
+    <Compile Include="Migrations\201904221801372_Initial3.Designer.cs">
+      <DependentUpon>201904221801372_Initial3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904221820579_Initial4.cs" />
+    <Compile Include="Migrations\201904221820579_Initial4.Designer.cs">
+      <DependentUpon>201904221820579_Initial4.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Driver.cs" />
@@ -224,6 +236,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\jquery.datetimepicker.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -293,6 +306,7 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
+    <Content Include="Scripts\jquery.datetimepicker.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -382,6 +396,15 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201904161736124_Initial.resx">
       <DependentUpon>201904161736124_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904221632497_Initial2.resx">
+      <DependentUpon>201904221632497_Initial2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904221801372_Initial3.resx">
+      <DependentUpon>201904221801372_Initial3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904221820579_Initial4.resx">
+      <DependentUpon>201904221820579_Initial4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

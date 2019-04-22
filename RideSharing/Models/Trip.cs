@@ -19,7 +19,7 @@ namespace RideSharing.Models
         public int TripId { get; set; }
 
 
-        [Display(Name ="Date and Time")]
+        [Display(Name ="Desired Arrival Date/Time")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd HH:mm}")]
         public DateTime TimeStamp { get; set; }
 
@@ -38,6 +38,9 @@ namespace RideSharing.Models
         public string DestAddress { get; set; }
 
         public bool IsCompleted { get; set; }
+
+        public string DriverIdentity { get; set; }
+        public string PassengerIdentity { get; set; }
 
         public virtual Driver Driver { get; set; }
         public virtual Passenger Passenger { get; set; }

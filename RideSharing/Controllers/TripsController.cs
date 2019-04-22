@@ -20,12 +20,12 @@ namespace RideSharing.Controllers
         //Trips listed by current passenger
 
         [HttpGet]
-        [Authorize(Roles = "Passenger")]
+       // [Authorize(Roles = "Passenger")]
         public async Task<ActionResult> Index()
         {
             var user = User.Identity.GetUserId();
             var trips = db.Trips
-                .Where(s => s.Passenger.PassengerIdentity.Equals(user) && s.Driver.DriverIdentity == null)
+                .Where(s => s.PassengerIdentity.Equals(user) && s.DriverIdentity == null)
                 .OrderByDescending(t => t.TimeStamp);
 
             var passenger = db.Passengers
@@ -43,13 +43,13 @@ namespace RideSharing.Controllers
         // Current trips on route
 
         [HttpGet]
-        [Authorize(Roles = "Passenger")]
+       // [Authorize(Roles = "Passenger")]
         public async Task<ActionResult> OnDelivery()
         {
             var user = User.Identity.GetUserId();
 
             var ondelivery = db.Trips
-                .Where(s => s.Driver.DriverIdentity.Length > 1 && s.Passenger.PassengerIdentity.Equals(user) && s.IsCompleted == false)
+                .Where(s => s.DriverIdentity.Length > 1 && s.PassengerIdentity.Equals(user) && s.IsCompleted == false)
                 .OrderByDescending(t => t.TimeStamp);
 
             return View(await ondelivery.ToListAsync());
@@ -64,7 +64,7 @@ namespace RideSharing.Controllers
         {
             var user = User.Identity.GetUserId();
 
-            var completed = db.Trips.Where(s => s.IsCompleted.Equals(true) && s.Passenger.PassengerIdentity.Equals(user));
+            var completed = db.Trips.Where(s => s.IsCompleted.Equals(true) && s.PassengerIdentity.Equals(user));
 
             return View(await completed.ToListAsync());
         }
@@ -72,27 +72,27 @@ namespace RideSharing.Controllers
 
         //Trips listed from all Passengers
 
-        [HttpGet]
-        [Authorize(Roles = "Passenger")]
-        public ActionResult AllTrips()
-        {
-            var user = User.Identity.GetUserId();
-            var trips = db.Trips.Where(s => s.Passenger.PassengerIdentity.Equals(user));
+        //[HttpGet]
+        //[Authorize(Roles = "Passenger")]
+        ////public ActionResult AllTrips()
+        //{
+        //    var user = User.Identity.GetUserId();
+        //    var trips = db.Trips.Where(s => s.PassengerIdentity.Equals(user));
 
-            if (trips.Count() == 0)
-            {
-                ViewBag.Message = "There are no Trips";
-            }
-            else
-            {
-                ViewBag.TripsCount = trips.Count();
-                ViewBag.TotalValue = trips.Sum(s => s.Total);
-                ViewBag.TotalCommision = trips.Sum(s => s.Commission);
+        //    if (trips.Count() == 0)
+        //    {
+        //        ViewBag.Message = "There are no Trips";
+        //    }
+        //    else
+        //    {
+        //        ViewBag.TripsCount = trips.Count();
+        //        ViewBag.TotalValue = trips.Sum(s => s.Total);
+        //        ViewBag.TotalCommision = trips.Sum(s => s.Commission);
 
-            }
+        //    }
 
-            return View();
-        }
+        //    return View();
+        //}
 
 
         /// GET: Create trip
@@ -111,9 +111,10 @@ namespace RideSharing.Controllers
         [HttpPost]
        // [Authorize(Roles = "Passenger")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "TripId,TimeStamp,Total,Commission,OriginAddress,DestAddress,IsCompleted,DriverIdentity,PassengerIdentity")] Trip trip)
-        {
-            trip.Passenger.PassengerIdentity = User.Identity.GetUserId();
+        public async Task<ActionResult> Create([Bind(Include = "TripId,TimeStamp,Total,Commission,OriginAddress,DestAddress,DriverIdentity,PassengerIdentity")] Trip trip)
+                              
+          {
+            trip.PassengerIdentity = User.Identity.GetUserId();
             if (ModelState.IsValid)
             {
                 db.Trips.Add(trip);
@@ -159,8 +160,8 @@ namespace RideSharing.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewBag.DriverId = new SelectList(db.Drivers, "DriverIdentity", "Name", trip.Driver.DriverIdentity);
-            ViewBag.PassengerId = new SelectList(db.Passengers, "PassengerId", "Name", trip.Passenger.PassengerIdentity);
+            ViewBag.DriverId = new SelectList(db.Drivers, "DriverIdentity", "Name", trip.DriverIdentity);
+            ViewBag.PassengerId = new SelectList(db.Passengers, "PassengerId", "Name", trip.PassengerIdentity);
             return View(trip);
         }
 

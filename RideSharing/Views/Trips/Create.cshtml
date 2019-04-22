@@ -12,7 +12,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.TimeStamp, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.TimeStamp, new { htmlAttributes = new { @class = "datepicker" } })
+                @Html.EditorFor(model => model.TimeStamp, new { htmlAttributes = new { @class = "datetimepicker" } })
                 @Html.ValidationMessageFor(model => model.TimeStamp, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -72,30 +72,46 @@
 </div>
 
 
-@{
-    <!--{
-        <!-- jQuery UI CSS Reference -->
-    //<link href="@Url.Content("~/Content/themes/base/minified/jquery-ui.min.css")" rel="stylesheet" />
-    //<!-- Required jQuery and jQuery UI Javascript references -->
-    //<script src="@Url.Content("~/Scripts/jquery-1.7.1.min.js")"></script>
-    //<script src="@Url.Content("~/Scripts/jquery-ui-1.10.4.min.js")"></script>}-->
 
-}
 
-<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 @section scripts{
+    <link href="~/Content/jquery.datetimepicker.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery.datetimepicker.js"></script>
 
 
-    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+
+
+    <!--
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    2
+    <script src="jquery.datetimepicker.js"></script>-->
+
 
 
 
     <script>
         $(function () {
-            $(".datepicker").datepicker();
+            $(".datetimepicker").datetimepicker({
+             
+
+            });
         });
 
     </script>
