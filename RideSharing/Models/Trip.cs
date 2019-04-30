@@ -36,7 +36,7 @@ namespace RideSharing.Models
         public DateTime TimeStamp { get; set; }
 
         [Display(Name = "Driver Commision")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:c}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "€{0:n} ")]
         public decimal Commission { get; set; }
 
         [Display(Name = "Origin Address")]

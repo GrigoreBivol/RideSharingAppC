@@ -1,5 +1,5 @@
 ﻿@using RideSharing.Models
-@model LoginViewModel
+@model LoginViewModel  
 @{
     ViewBag.Title = "Log in";
 }
@@ -34,8 +34,9 @@
                 @*drop down list user can chosse driver or passenger*@
                 @Html.DropDownListFor(m => m.UserRoles,
                   new SelectList(Enum.GetValues(typeof(RideSharing.Models.TypeUser))),
-                  "Select Driver or Passenger", new { @class = "form-control" })
+                  "Select from below ... ", new { @class = "form-control" })
 
+                
 
 
             </div>
