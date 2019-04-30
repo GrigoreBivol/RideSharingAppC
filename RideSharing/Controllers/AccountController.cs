@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using RideSharing.Models;
@@ -17,6 +19,7 @@ namespace RideSharing.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        //private ApplicationRoleManager _roleManger;
         ApplicationDbContext _context;
 
         public AccountController()
@@ -24,7 +27,7 @@ namespace RideSharing.Controllers
             _context = new ApplicationDbContext();
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -36,9 +39,9 @@ namespace RideSharing.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -78,10 +81,18 @@ namespace RideSharing.Controllers
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
+       
+
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    {
+                        // if user successufly login 
+                        //set user rome to global variable Role inf the confg file
+                        Config.Role = model.UserRoles;
+                        // redirect the use to index trips , index trips show trip
+                        return Redirect("/Trips/");
+                    }
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -122,7 +133,7 @@ namespace RideSharing.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -149,14 +160,31 @@ namespace RideSharing.Controllers
         //
         // POST: /Account/Register
         [HttpPost]
-        [AllowAnonymous]     
+        [AllowAnonymous]
         //[Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model, Driver driver, Passenger passenger)
+        public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
+                //instance passenger contain only username 
+                var passenger = new Passenger()
+                {
+                    Address = "",
+                    City = "",
+                    PassengerIdentity = model.UserName,
+                    Name = "",
+
+                };
+                //instance driver contain only username 
+                var driver = new Driver()
+                {
+                    DriverIdentity = model.UserName,
+                    Name = "",
+                };
+             
+
                 //Add the Address properties
                 //user.Address = model.Address;
                 //user.City = model.City;
@@ -165,32 +193,36 @@ namespace RideSharing.Controllers
 
 
                 // CHECK User Role and add to that particular table
-                if (model.UserRoles == "Driver")
-                {
-                    driver = new Driver { DriverIdentity = user.Id, Name = model.UserName };
-                    _context.Drivers.Add(driver);
-                    _context.SaveChanges();
-                }
+                //if (model.UserRoles == "Driver")
+                //{
+                //    driver = new Driver { DriverIdentity = user.Id, Name = model.UserName };
+                //    _context.Drivers.Add(driver);
+                //    _context.SaveChanges();
+                //}
 
-                if (model.UserRoles == "Passenger")
-                {
-                    passenger = new Passenger { PassengerIdentity = user.Id, Name = model.UserName };
-                    _context.Passengers.Add(passenger);
-                    _context.SaveChanges();
-                }
+                //if (model.UserRoles == "Passenger")
+                //{
+                //    passenger = new Passenger { PassengerIdentity = user.Id, Name = model.UserName };
+                //    _context.Passengers.Add(passenger);
+                //    _context.SaveChanges();
+                //}
+
                 var result = await UserManager.CreateAsync(user, model.Password);
 
 
                 if (result.Succeeded)
                 {
-                    UserManager.AddToRole(user.Id, model.UserRoles);
-                    
-                    
+                    //UserManager.AddToRole(user.Id, model.UserRoles);
+                    // add driver to drivers table
+                    _context.Drivers.Add(driver);
+                    // add Passengers to Passengers table
+                    _context.Passengers.Add(passenger);
+                    _context.SaveChanges();
 
                     return RedirectToAction("Index", "Home");
                 }
 
-                ViewBag.Name = new SelectList(_context.Roles.Where(u => !u.Name.Contains("Admin")).ToList(), "Name", "Name"); 
+                ViewBag.Name = new SelectList(_context.Roles.Where(u => !u.Name.Contains("Admin")).ToList(), "Name", "Name");
                 AddErrors(result);
             }
 

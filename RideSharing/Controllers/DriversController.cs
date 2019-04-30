@@ -13,6 +13,7 @@ using Microsoft.AspNet.Identity;
 
 namespace RideSharing.Controllers
 {
+    [Authorize]
     public class DriversController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -30,8 +31,7 @@ namespace RideSharing.Controllers
                 .Where(s => s.DriverIdentity.Equals(user))
                 .ToList();
 
-            var isOnline = driver[0].OnLine;
-            ViewBag.Online = isOnline;
+        
 
 
             return View(await trips.ToListAsync());
@@ -43,7 +43,7 @@ namespace RideSharing.Controllers
         public async Task<ActionResult> OnDelivery()
         {
             var user = User.Identity.GetUserId();
-            var ondelivery = db.Trips.Where(s => s.Driver.DriverIdentity.Length > 1 && s.Driver.DriverIdentity.Equals(user) && s.IsCompleted == false);
+            var ondelivery = db.Trips.Where(s => s.Driver.DriverIdentity.Length > 1 && s.Driver.DriverIdentity.Equals(user) && s.Status == TripStatus.Activated);
 
             return View(await ondelivery.ToListAsync());
         }
@@ -55,8 +55,8 @@ namespace RideSharing.Controllers
         public async Task<ActionResult> Completed()
         {
             var user = User.Identity.GetUserId();
-
-            var completed = db.Trips.Where(s => s.IsCompleted.Equals(true) && s.Driver.DriverIdentity.Equals(user));
+            // get all completed trips
+            var completed = db.Trips.Where(s => s.Status.Equals(TripStatus.Completed) && s.Driver.DriverIdentity.Equals(user));
 
             return View(await completed.ToListAsync());
         }
@@ -76,7 +76,6 @@ namespace RideSharing.Controllers
             else
             {
                 ViewBag.TripsCount = trips.Count();
-                ViewBag.TotalValue = trips.Sum(s => s.Total);
                 ViewBag.TotalCommision = trips.Sum(s => s.Commission);
             }
 
@@ -99,7 +98,7 @@ namespace RideSharing.Controllers
 
                 currentdriver.DriverIdentity = user;
                 currentdriver.Name = name;
-                currentdriver.OnLine = false;
+              
 
                 db.Entry(currentdriver).State = EntityState.Modified;
                 await db.SaveChangesAsync();
@@ -125,7 +124,7 @@ namespace RideSharing.Controllers
 
                 currentdriver.DriverIdentity = user;
                 currentdriver.Name = name;
-                currentdriver.OnLine = true;
+           
 
                 db.Entry(currentdriver).State = EntityState.Modified;
                 await db.SaveChangesAsync();
@@ -178,7 +177,7 @@ namespace RideSharing.Controllers
 
             var user = User.Identity.GetUserId();
             //order.DriverIdentity = user;
-            currenttrip.IsCompleted = true;
+            currenttrip.Status = TripStatus.Completed;
 
             if (ModelState.IsValid)
             {

@@ -18,9 +18,5 @@ namespace RideSharing.Models
 
         public virtual ICollection<Trip> Trips { get; set; }
 
-        public Passenger()
-        {
-            OnLine = false;
-        }
     }
 }

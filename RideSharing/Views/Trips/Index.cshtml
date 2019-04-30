@@ -1,21 +1,20 @@
 ﻿@model IEnumerable<RideSharing.Models.Trip>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Trips";
 }
 
 <h2>Index</h2>
-
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @if (ViewData["Role"].ToString() == "Passenger")
+    {
+        @Html.ActionLink("Create New", "Create")
+    }
 </p>
 <table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.TimeStamp)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Total)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Commission)
@@ -27,37 +26,63 @@
             @Html.DisplayNameFor(model => model.DestAddress)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.IsCompleted)
+            @Html.DisplayNameFor(model => model.Status)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.TimeStamp)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Total)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Commission)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OriginAddress)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DestAddress)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsCompleted)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.TripId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.TripId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.TripId })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeStamp)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Commission)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OriginAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DestAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+
+
+            <td>
+                @*check the user role if the user is passenger he can edit , delete and see the details*@
+                @if ((string)ViewData["Role"] == "Passenger")
+                {
+                    @Html.ActionLink("  Edit", "Edit", new { id = item.TripId })
+                    @Html.ActionLink("  Details", "Details", new { id = item.TripId })
+                    @Html.ActionLink("  Delete", "Delete", new { id = item.TripId })
+                }
+                @*check the user role if the user is Driver he can  see the details only*@
+
+                @if ((string)ViewData["Role"] == "Driver")
+                {
+                    @Html.ActionLink("Details ", "Details", new { id = item.TripId })
+
+                    if (item.Status == RideSharing.Models.TripStatus.Activated)
+                    {
+                        @Html.ActionLink(" Accept", "AcceptTrip", new { id = item.TripId })
+
+                    }
+                    else if (item.Status == RideSharing.Models.TripStatus.Accepted)
+                    {
+                        @Html.ActionLink(" Completed", "CompleteTrip", new { id = item.TripId })
+                    }
+
+                    else
+                    { }
+
+                }
+
+
+            </td>
+        </tr>
+    }
 
 </table>

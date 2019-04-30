@@ -15,7 +15,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RideSharing</RootNamespace>
     <AssemblyName>RideSharing</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
@@ -27,6 +27,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,11 +59,7 @@
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
@@ -220,8 +217,17 @@
     <Compile Include="Migrations\201904221820579_Initial4.Designer.cs">
       <DependentUpon>201904221820579_Initial4.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201904280934145_modelUpdate1.cs" />
+    <Compile Include="Migrations\201904280934145_modelUpdate1.Designer.cs">
+      <DependentUpon>201904280934145_modelUpdate1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904281303457_modelUpdate2.cs" />
+    <Compile Include="Migrations\201904281303457_modelUpdate2.Designer.cs">
+      <DependentUpon>201904281303457_modelUpdate2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Configcs.cs" />
     <Compile Include="Models\Driver.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -405,6 +411,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201904221820579_Initial4.resx">
       <DependentUpon>201904221820579_Initial4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904280934145_modelUpdate1.resx">
+      <DependentUpon>201904280934145_modelUpdate1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904281303457_modelUpdate2.resx">
+      <DependentUpon>201904281303457_modelUpdate2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

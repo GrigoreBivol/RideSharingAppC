@@ -11,6 +11,7 @@ using RideSharing.Models;
 
 namespace RideSharing.Controllers
 {
+    [Authorize]
     public class PassengersController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

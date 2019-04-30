@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity;
 
 namespace RideSharing.Controllers
 {
+    [Authorize]
     public class TripsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -23,23 +24,61 @@ namespace RideSharing.Controllers
        // [Authorize(Roles = "Passenger")]
         public async Task<ActionResult> Index()
         {
-            var user = User.Identity.GetUserId();
-            var trips = db.Trips
-                .Where(s => s.PassengerIdentity.Equals(user) && s.DriverIdentity == null)
-                .OrderByDescending(t => t.TimeStamp);
+            // set role of user to ViewData to use it in the views
+            ViewData["Role"] = Config.Role;
+            // get the current user nama 
+            var user = User.Identity.Name;
+            // new querybale list of trips
+            IQueryable<Trip> trips=null;
+            // check if the current user connect ass passenger 
+            if (Config.Role == "Passenger")
+            {
+                // if the user is a passenger get all trips created by the user
+                    trips = db.Trips
+                    .Where(s => s.PassengerIdentity.Equals(user) && s.DriverIdentity == null)
+                    .OrderByDescending(t => t.TimeStamp);
+            }
+            else
+            {
+                // the current user is a driver so we get all the trips
+                trips = db.Trips.OrderByDescending(t => t.TimeStamp);
 
-            var passenger = db.Passengers
-                .Where(s => s.PassengerIdentity.Equals(user))
-                .ToList();
-
-            var isOnLine = passenger[0].OnLine;
-
-            ViewBag.Open = isOnLine;
-
+            }
             return View(await trips.ToListAsync());
         }
 
+        public async Task<ActionResult> AcceptTrip(int id)
+        {
+            // get the curent user name
+            var user = User.Identity.Name;
+            //get the trips by id
+            var trips = db.Trips.Where(s => s.TripId.Equals(id)).FirstOrDefault();
+            // update status of trips tp accepted
+            trips.Status = TripStatus.Accepted;
+            //set the user to driver identity 
+            trips.DriverIdentity = user;
+            db.SaveChanges();
+            return Redirect("/Trips/");
+        }
 
+        public async Task<ActionResult> CompleteTrip(int id)
+        {
+
+            // get the curent user name
+            var user = User.Identity.Name;
+            //get the trips by id
+            var trips = db.Trips.Where(s => s.TripId.Equals(id)).FirstOrDefault();
+            // update status of trips tp compketed
+            trips.Status = TripStatus.Completed;
+            trips.DriverIdentity = user;
+            db.SaveChanges();
+            SendMail();
+            return Redirect("/Trips/");
+        }
+
+        public void SendMail()
+
+        { }
         // Current trips on route
 
         [HttpGet]
@@ -49,7 +88,7 @@ namespace RideSharing.Controllers
             var user = User.Identity.GetUserId();
 
             var ondelivery = db.Trips
-                .Where(s => s.DriverIdentity.Length > 1 && s.PassengerIdentity.Equals(user) && s.IsCompleted == false)
+                .Where(s => s.DriverIdentity.Length > 1 && s.PassengerIdentity.Equals(user) && s.Status != TripStatus.Completed)
                 .OrderByDescending(t => t.TimeStamp);
 
             return View(await ondelivery.ToListAsync());
@@ -64,7 +103,7 @@ namespace RideSharing.Controllers
         {
             var user = User.Identity.GetUserId();
 
-            var completed = db.Trips.Where(s => s.IsCompleted.Equals(true) && s.PassengerIdentity.Equals(user));
+            var completed = db.Trips.Where(s => s.Status.Equals(TripStatus.Completed) && s.PassengerIdentity.Equals(user));
 
             return View(await completed.ToListAsync());
         }
@@ -114,9 +153,9 @@ namespace RideSharing.Controllers
         public async Task<ActionResult> Create([Bind(Include = "TripId,TimeStamp,Total,Commission,OriginAddress,DestAddress,DriverIdentity,PassengerIdentity")] Trip trip)
                               
           {
-            trip.PassengerIdentity = User.Identity.GetUserId();
+            trip.PassengerIdentity = User.Identity.Name;
             if (ModelState.IsValid)
-            {
+            {  
                 db.Trips.Add(trip);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");

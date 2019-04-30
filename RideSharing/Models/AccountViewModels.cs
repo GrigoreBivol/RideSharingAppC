@@ -3,6 +3,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RideSharing.Models
 {
+
+
+    // Enumeration for user type , when user can login as driver or passengers
+    public enum TypeUser
+    {
+        Driver = 1,
+        Passenger = 0
+    }
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
@@ -48,6 +56,7 @@ namespace RideSharing.Models
 
     public class LoginViewModel
     {
+
         [Required]
         [Display(Name = "User Name")]
         public string UserName { get; set; }
@@ -59,6 +68,10 @@ namespace RideSharing.Models
 
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
+
+        [Required]
+        [Display(Name = "User Roles")]
+        public string UserRoles { get; set; }
     }
 
     public class RegisterViewModel
@@ -83,9 +96,6 @@ namespace RideSharing.Models
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-        [Required]
-        [Display(Name = "User Roles")]
-        public string UserRoles { get; set; }
     }
 
     public class ResetPasswordViewModel

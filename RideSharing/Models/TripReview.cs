@@ -14,10 +14,6 @@ namespace RideSharing.Models
         public DateTime TimeStamp { get; set; }
         public string PassengerReview { get; set; }
         public string DriverReview { get; set; }
-
-
-
-
         public virtual Trip Trip { get; set; }
         //public virtual Passenger Passenger { get; set; }
 

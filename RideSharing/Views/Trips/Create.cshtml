@@ -1,6 +1,5 @@
 ﻿@model RideSharing.Models.Trip
 
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -16,15 +15,6 @@
                 @Html.ValidationMessageFor(model => model.TimeStamp, "", new { @class = "text-danger" })
             </div>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Total, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
         <div class="form-group">
             @Html.LabelFor(model => model.Commission, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -36,7 +26,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.OriginAddress, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.OriginAddress, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextBoxFor(model => model.OriginAddress, new { htmlAttributes = new { @class = "form-control", @id = "txt_Source" } })
                 @Html.ValidationMessageFor(model => model.OriginAddress, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -44,18 +34,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.DestAddress, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.DestAddress, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextBoxFor(model => model.DestAddress, new { htmlAttributes = new { @class = "form-control", @id = "txt_Destination" } })
                 @Html.ValidationMessageFor(model => model.DestAddress, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsCompleted, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.IsCompleted)
-                    @Html.ValidationMessageFor(model => model.IsCompleted, "", new { @class = "text-danger" })
-                </div>
             </div>
         </div>
 
@@ -65,8 +45,12 @@
             </div>
         </div>
     </div>
+
 }
 
+<div id="map-canvas" style="height: 500px; width:100%;">
+
+</div>
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
@@ -90,13 +74,26 @@
 
 
 
+
+
+
 @section scripts{
     <link href="~/Content/jquery.datetimepicker.css" rel="stylesheet" />
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyBm1pln0MedohNSrmCASOeTF9t49xWpaEo"></script>
+
 
     <script src="~/Scripts/jquery.datetimepicker.js"></script>
+    <script type="text/javascript">
+        var source, destination;
+
+        var directionsService = new google.maps.DirectionsService();
+        google.maps.event.addDomListener(window, 'load', function () {
+            new google.maps.places.SearchBox(document.getElementById('txt_Source'));
+            new google.maps.places.SearchBox(document.getElementById('txt_Destination'));
 
 
-
+        });
+    </script>
 
     <!--
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
@@ -109,7 +106,7 @@
     <script>
         $(function () {
             $(".datetimepicker").datetimepicker({
-             
+
 
             });
         });

@@ -7,12 +7,24 @@ using System.Web;
 
 namespace RideSharing.Models
 {
+
+
+    public enum TripStatus
+    {
+
+      
+        Activated=1,
+        Accepted,
+        Completed
+
+    }
+
     public class Trip
     {
         public Trip()
         {
             TimeStamp = DateTime.Now;
-            IsCompleted = false;
+            Status = TripStatus.Activated;
         }
 
         [Key]
@@ -22,10 +34,6 @@ namespace RideSharing.Models
         [Display(Name ="Desired Arrival Date/Time")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd HH:mm}")]
         public DateTime TimeStamp { get; set; }
-
-        [Display(Name = "Total")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:c}")]
-        public decimal Total { get; set; }
 
         [Display(Name = "Driver Commision")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:c}")]
@@ -37,7 +45,7 @@ namespace RideSharing.Models
         [Display(Name = "Destination Address")]
         public string DestAddress { get; set; }
 
-        public bool IsCompleted { get; set; }
+        public TripStatus Status { get; set; }
 
         public string DriverIdentity { get; set; }
         public string PassengerIdentity { get; set; }
