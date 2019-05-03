@@ -26,7 +26,7 @@ namespace RideSharing.Controllers
         {
             // set role of user to ViewData to use it in the views
             ViewData["Role"] = Config.Role;
-            // get the current user nama 
+            // get the current user name 
             var user = User.Identity.Name;
             // new querybale list of trips
             IQueryable<Trip> trips=null;
@@ -168,7 +168,7 @@ namespace RideSharing.Controllers
 
 
         // GET: Orders/Edit/5
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -180,8 +180,8 @@ namespace RideSharing.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.DriverId = new SelectList(db.Drivers, "DriverIdentity", "Name", trip.Driver.DriverIdentity);
-            ViewBag.PassengerId = new SelectList(db.Passengers, "ShopIdentity", "Name", trip.Passenger.PassengerIdentity);
+            //ViewBag.DriverId = new SelectList(db.Drivers, "DriverIdentity", "Name", trip.Driver.DriverIdentity);
+            //ViewBag.PassengerId = new SelectList(db.Passengers, "ShopIdentity", "Name", trip.Passenger.PassengerIdentity);
             return View(trip);
         }
 
@@ -189,7 +189,7 @@ namespace RideSharing.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "TripId,TimeStamp,Total,Commission,OriginAddress,DestAddress,IsCompleted,DriverIdentity,PassengerIdentity")] Trip trip)
         {
@@ -205,7 +205,7 @@ namespace RideSharing.Controllers
         }
 
         // GET: Orders/Details/5
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Passenger")]
         public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
@@ -221,7 +221,7 @@ namespace RideSharing.Controllers
         }
 
         // GET: Orders/Delete/5
-       // [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Passenger")]
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
