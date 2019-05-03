@@ -82,7 +82,6 @@
 
 
 
-
 <script type="text/javascript">
     function initialize() {
         geocoder = new google.maps.Geocoder();
@@ -178,11 +177,14 @@
 @section scripts{
     <link href="~/Content/jquery.datetimepicker.css" rel="stylesheet" />
     <script src="~/Scripts/jquery.datetimepicker.js"></script>
-
+   
 
     <script>
         $(function () {
-            $(".datetimepicker").datetimepicker();
+            $(".datetimepicker").datetimepicker({
+
+
+            });
 
 
 
