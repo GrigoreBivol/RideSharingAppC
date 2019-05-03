@@ -2,7 +2,7 @@
 
 
 
-<script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyBm1pln0MedohNSrmCASOeTF9t49xWpaEo"></script>
+
 
 
 
@@ -62,136 +62,145 @@
 </div>
 
 
+    
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyBm1pln0MedohNSrmCASOeTF9t49xWpaEo"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.5.1.js"></script>
 
 
+    
+    <script type="text/javascript">
+        var source, destination;
 
-
-
-
-<script type="text/javascript">
-    var source, destination;
-
-    var directionsService = new google.maps.DirectionsService();
-    google.maps.event.addDomListener(window, 'load', function () {
-        new google.maps.places.SearchBox(document.getElementById('txt_Source'));
-        new google.maps.places.SearchBox(document.getElementById('txt_Destination'));
-
-
-    });
-</script>
-
-
-
-<script type="text/javascript">
-    function initialize() {
-        geocoder = new google.maps.Geocoder();
-        var latlng = new google.maps.LatLng(53.2908338, -6.3702191);
-        var mapOptions = {
-            zoom: 14,
-            center: latlng
-        }
-        map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-    }
-
-
-    function calcRoute() {
         var directionsService = new google.maps.DirectionsService();
-        var directionsDisplay = new google.maps.DirectionsRenderer();
-        var dublin = new google.maps.LatLng(53.2908338, -6.3702191);
-        var mapOptions = {
-            zoom: 8,
-            center: dublin
+        google.maps.event.addDomListener(window, 'load', function () {
+            new google.maps.places.SearchBox(document.getElementById('txt_Source'));
+            new google.maps.places.SearchBox(document.getElementById('txt_Destination'));
+
+
+        });
+    </script>
+
+    <!--
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    2
+    <script src="jquery.datetimepicker.js"></script>-->
+
+    <script type="text/javascript">
+        function initialize() {
+            geocoder = new google.maps.Geocoder();
+            var latlng = new google.maps.LatLng(-34.397, 150.644);
+            var mapOptions = {
+                zoom: 8,
+                center: latlng
+            }
+            map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
         }
-        var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-        directionsDisplay.setMap(map);
-        var start = document.getElementById('txt_Source').value;
-        var end = document.getElementById('txt_Destination').value;
-        var request = {
-            origin: start,
-            destination: end,
-            travelMode: 'DRIVING'
-        };
-        directionsService.route(request, function (result, status) {
-            if (status == 'OK') {
-                directionsDisplay.setDirections(result);
+ 
+
+
+    
+
+
+        function calcRoute() {
+            var directionsService = new google.maps.DirectionsService();
+            var directionsDisplay = new google.maps.DirectionsRenderer();
+            var dublin = new google.maps.LatLng(53.2908338, -6.3702191);
+            var mapOptions = {
+                zoom: 8,
+                center: dublin
             }
+            var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+            directionsDisplay.setMap(map);
+            var start = document.getElementById('txt_Source').value;
+            var end = document.getElementById('txt_Destination').value;
+            var request = {
+                origin: start,
+                destination: end,
+                travelMode: 'DRIVING'
+            };
+            directionsService.route(request, function (result, status) {
+                if (status == 'OK') {
+                    directionsDisplay.setDirections(result);
+                }
+            });
+        }
+
+
+        function calculateAndDisplayRoute(directionsService, directionsDisplay, pointA, pointB) {
+            directionsService.route({
+                origin: pointA,
+                destination: pointB,
+                avoidTolls: false,
+                avoidHighways: false,
+                travelMode: google.maps.TravelMode.DRIVING
+            }, function (response, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(response);
+                } else {
+                }
+            });
+        }
+
+        function codeAddress(address) {
+            geocoder = new google.maps.Geocoder();
+
+            geocoder.geocode({ 'address': address }, function (results, status) {
+
+                if (status == 'OK') {
+                    debugger;
+                    return results[0].geometry.location;
+
+                } else {
+                    return null;
+                }
+            });
+        }
+
+        initialize();
+
+        $('#txt_Source').change(function () {
+            calcRoute();//
         });
-    }
-
-
-    function calculateAndDisplayRoute(directionsService, directionsDisplay, pointA, pointB) {
-        directionsService.route({
-            origin: pointA,
-            destination: pointB,
-            avoidTolls: false,
-            avoidHighways: false,
-            travelMode: google.maps.TravelMode.DRIVING
-        }, function (response, status) {
-            if (status == google.maps.DirectionsStatus.OK) {
-                directionsDisplay.setDirections(response);
-            } else {
-            }
+        $('#txt_Source').click(function () {
+            calcRoute();//s
         });
-    }
-
-    function codeAddress(address) {
-        geocoder = new google.maps.Geocoder();
-
-        geocoder.geocode({ 'address': address }, function (results, status) {
-
-            if (status == 'OK') {
-                debugger;
-                return results[0].geometry.location;
-
-            } else {
-                return null;
-            }
+        $('#txt_Source').mouseout(function () {
+            calcRoute();//s
         });
-    }
-    initialize();
+        $('#txt_Destination').change(function () {
+            calcRoute();//
+        });
 
-    $('#txt_Source').change(function () {
-        calcRoute();//
-    });
-    $('#txt_Source').click(function () {
-        calcRoute();//s
-    });
-    $('#txt_Source').mouseout(function () {
-        calcRoute();//s
-    });
-    $('#txt_Destination').change(function () {
-        calcRoute();//
-    });
-
-    $('#txt_Destination').click(function () {
-        calcRoute();//
-    });
-    $('#txt_Destination').mouseout(function () {
-        calcRoute();//
-    });
-</script>
+        $('#txt_Destination').click(function () {
+            calcRoute();//
+        });
+        $('#txt_Destination').mouseout(function () {
+            calcRoute();//
+        });
+    </script>
 
 
+     
+
+    @section scripts{
+        <link href="~/Content/jquery.datetimepicker.css" rel="stylesheet" />
+        <script src="~/Scripts/jquery.datetimepicker.js"></script>
 
 
-@section scripts{
-    <link href="~/Content/jquery.datetimepicker.css" rel="stylesheet" />
-    <script src="~/Scripts/jquery.datetimepicker.js"></script>
-   
+        <script>
+            $(function () {
+                $(".datetimepicker").datetimepicker({
 
-    <script>
-        $(function () {
-            $(".datetimepicker").datetimepicker({
+
+                });
+
 
 
             });
 
+        </script>
 
 
-        });
-
-    </script>
-
-
-}
+    }
+    
 
