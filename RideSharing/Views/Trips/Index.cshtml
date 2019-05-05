@@ -65,7 +65,7 @@
                 {
                     @Html.ActionLink("Details ", "Details", new { id = item.TripId })
 
-                    if (item.Status == RideSharing.Models.TripStatus.Activated)
+                    if (item.Status == RideSharing.Models.TripStatus.Active)
                     {
                         @Html.ActionLink(" Accept", "AcceptTrip", new { id = item.TripId })
 
