@@ -13,7 +13,7 @@ namespace RideSharing.Models
     {
 
       
-        Activated=1,
+        Active=1,
         Accepted,
         Completed
 
@@ -24,7 +24,7 @@ namespace RideSharing.Models
         public Trip()
         {
             TimeStamp = DateTime.Now;
-            Status = TripStatus.Activated;
+            Status = TripStatus.Active;
         }
 
         [Key]

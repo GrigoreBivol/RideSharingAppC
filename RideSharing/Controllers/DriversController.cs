@@ -43,7 +43,7 @@ namespace RideSharing.Controllers
         public async Task<ActionResult> OnDelivery()
         {
             var user = User.Identity.GetUserId();
-            var ondelivery = db.Trips.Where(s => s.Driver.DriverIdentity.Length > 1 && s.Driver.DriverIdentity.Equals(user) && s.Status == TripStatus.Activated);
+            var ondelivery = db.Trips.Where(s => s.Driver.DriverIdentity.Length > 1 && s.Driver.DriverIdentity.Equals(user) && s.Status == TripStatus.Active);
 
             return View(await ondelivery.ToListAsync());
         }
