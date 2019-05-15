@@ -19,7 +19,7 @@ namespace RideSharing.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        //private ApplicationRoleManager _roleManger;
+        private ApplicationRoleManager _roleManger;
         ApplicationDbContext _context;
 
         public AccountController()

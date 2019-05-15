@@ -201,30 +201,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201904161736124_Initial.cs" />
-    <Compile Include="Migrations\201904161736124_Initial.Designer.cs">
-      <DependentUpon>201904161736124_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201904221632497_Initial2.cs" />
-    <Compile Include="Migrations\201904221632497_Initial2.Designer.cs">
-      <DependentUpon>201904221632497_Initial2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201904221801372_Initial3.cs" />
-    <Compile Include="Migrations\201904221801372_Initial3.Designer.cs">
-      <DependentUpon>201904221801372_Initial3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201904221820579_Initial4.cs" />
-    <Compile Include="Migrations\201904221820579_Initial4.Designer.cs">
-      <DependentUpon>201904221820579_Initial4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201904280934145_modelUpdate1.cs" />
-    <Compile Include="Migrations\201904280934145_modelUpdate1.Designer.cs">
-      <DependentUpon>201904280934145_modelUpdate1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201904281303457_modelUpdate2.cs" />
-    <Compile Include="Migrations\201904281303457_modelUpdate2.Designer.cs">
-      <DependentUpon>201904281303457_modelUpdate2.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Configcs.cs" />
@@ -398,26 +374,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201904161736124_Initial.resx">
-      <DependentUpon>201904161736124_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904221632497_Initial2.resx">
-      <DependentUpon>201904221632497_Initial2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904221801372_Initial3.resx">
-      <DependentUpon>201904221801372_Initial3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904221820579_Initial4.resx">
-      <DependentUpon>201904221820579_Initial4.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904280934145_modelUpdate1.resx">
-      <DependentUpon>201904280934145_modelUpdate1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904281303457_modelUpdate2.resx">
-      <DependentUpon>201904281303457_modelUpdate2.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

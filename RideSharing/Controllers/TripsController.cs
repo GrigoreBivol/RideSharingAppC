@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using RideSharing.Models;
 using Microsoft.AspNet.Identity;
+using System.Net.Mail;
 
 namespace RideSharing.Controllers
 {
@@ -19,7 +20,6 @@ namespace RideSharing.Controllers
 
 
         //Trips listed by current passenger
-
         [HttpGet]
        // [Authorize(Roles = "Passenger")]
         public async Task<ActionResult> Index()
@@ -29,23 +29,88 @@ namespace RideSharing.Controllers
             // get the current user name 
             var user = User.Identity.Name;
             // new querybale list of trips
-            IQueryable<Trip> trips=null;
+            //IQueryable<Trip> trips=null;
+            List<TripModelView> tripsReviews = null;
+            // check if the current user connect ass passenger 
+            List<Trip> trips=null;
+            // if the user is a passenger get all trips created by the user
+            if (Config.Role == "Passenger")
+            {
+                   trips = db.Trips
+                .Where(s => s.PassengerIdentity.Equals(user) )
+                .OrderByDescending(t => t.TimeStamp).ToList();
+
+            }
+            else
+            {  trips = db.Trips.Where(c=>c.Status==TripStatus.Active
+            || (c.Status==TripStatus.Accepted && c.DriverIdentity== user) 
+            || (c.Status == TripStatus.Completed && c.DriverIdentity == user)).ToList() ;
+            }
+
+            return View(GetReviewList(trips));
+        }
+
+
+        public List<TripModelView> GetReviewList(List<Trip> trips )
+        {
+            // set role of user to ViewData to use it in the views
+            ViewData["Role"] = Config.Role;
+            // get the current user name 
+            var user = User.Identity.Name;
+            // new querybale list of trips
+            //IQueryable<Trip> trips=null;
+            List<TripModelView> tripsReviews = null;
             // check if the current user connect ass passenger 
             if (Config.Role == "Passenger")
             {
                 // if the user is a passenger get all trips created by the user
-                    trips = db.Trips
-                    .Where(s => s.PassengerIdentity.Equals(user) && s.DriverIdentity == null)
-                    .OrderByDescending(t => t.TimeStamp);
+
+                var   tripsReview = db.TripReviews.ToList();
+                tripsReviews = new List<TripModelView>();
+                foreach (var item in trips)
+                {
+                    tripsReviews.Add(new TripModelView()
+                    {
+                        Commission = item.Commission,
+                        DestAddress = item.DestAddress,
+                        DriverIdentity = item.DriverIdentity,
+                        OriginAddress = item.OriginAddress,
+                        PassengerIdentity = item.PassengerIdentity,
+                        Status = item.Status,
+                        TimeStamp = item.TimeStamp,
+                        TripId = item.TripId,
+                        TripReview = tripsReview.Where(c => c.TripReviewId == item.TripId).FirstOrDefault()
+                    });
+                }
             }
             else
             {
-                // the current user is a driver so we get all the trips
-                trips = db.Trips.OrderByDescending(t => t.TimeStamp);
+
+        
+                 var   tripsReview = db.TripReviews.ToList();
+                tripsReviews = new List<TripModelView>();
+                foreach (var item in trips)
+                {
+                    tripsReviews.Add(new TripModelView()
+                    {
+                        Commission = item.Commission,
+                        DestAddress = item.DestAddress,
+                        DriverIdentity = item.DriverIdentity,
+                        OriginAddress = item.OriginAddress,
+                        PassengerIdentity = item.PassengerIdentity,
+                        Status = item.Status,
+                        TimeStamp = item.TimeStamp,
+                        TripId = item.TripId,
+                        TripReview = tripsReview.Where(c => c.TripReviewId == item.TripId).FirstOrDefault()
+                    });
+                }
 
             }
-            return View(await trips.ToListAsync());
+            return tripsReviews;
+
+
         }
+
 
         public async Task<ActionResult> AcceptTrip(int id)
         {
@@ -57,13 +122,37 @@ namespace RideSharing.Controllers
             trips.Status = TripStatus.Accepted;
             //set the user to driver identity 
             trips.DriverIdentity = user;
+            var userReceiver = db.Users.Where(c => c.UserName == trips.PassengerIdentity).FirstOrDefault();
+            SendMail(userReceiver.Email, userReceiver.UserName, user, userReceiver.UserName, trips.PassengerIdentity);
             db.SaveChanges();
             return Redirect("/Trips/");
         }
-
-        public async Task<ActionResult> CompleteTrip(int id)
+        public ActionResult TripDriverReview(int? TripReviewId, string Comment)
         {
-
+            var tripsReview = db.TripReviews.Where(C => C.TripReviewId == TripReviewId).FirstOrDefault();
+            var user = User.Identity.Name;
+            tripsReview.DriverIsReview = true;
+            tripsReview.DriverUserName = user;
+            tripsReview.DriverReview = Comment;
+            tripsReview.TimeStampDrivRev = DateTime.Now;
+            db.SaveChanges();
+            return Redirect("/Trips/");
+        }
+        public ActionResult TripPassengerReview(int? TripReviewId, string Comment)
+        {
+            var tripsReview = db.TripReviews.Where(C => C.TripReviewId == TripReviewId).FirstOrDefault();
+            var user = User.Identity.Name;
+            tripsReview.PassengerIsReview = true;
+            tripsReview.PassengerUserName = user;
+            tripsReview.PassengerReview = Comment;
+            tripsReview.TimeStampPassRev = DateTime.Now;
+            db.SaveChanges();
+            return Redirect("/Trips/");
+        }
+         public async Task<ActionResult> CompleteTrip(int id)
+         {
+            string EmailReceiver = "";
+            string UserNameReceiver = "";      
             // get the curent user name
             var user = User.Identity.Name;
             //get the trips by id
@@ -71,14 +160,32 @@ namespace RideSharing.Controllers
             // update status of trips tp compketed
             trips.Status = TripStatus.Completed;
             trips.DriverIdentity = user;
+            var userReceiver = db.Users.Where(c => c.UserName == trips.PassengerIdentity).FirstOrDefault();
+            var tripReview = new TripReview()
+            { 
+                PassengerUserName= userReceiver.UserName,
+                DriverUserName= user, 
+                TripId= trips.TripId
+            };
+            db.TripReviews.Add(tripReview);
             db.SaveChanges();
-            SendMail();
             return Redirect("/Trips/");
         }
 
-        public void SendMail()
+        public void SendMail(string to , string UserTo, string UserFrom,string driverName ,string PassengerName)
+        {
+            var client = new SmtpClient(Config.smtpServer, Config.Port)
+            {
+                Credentials = new NetworkCredential(Config.EmailServer, Config.EmailPass),
+                EnableSsl = true
+            };
+            String Body= "Hello passenger "+ PassengerName  + ".Your trip has been accepted by the driver "+ driverName + " .The driver will contact you soon. Thank you for using RideSharing App.";
+            //client.Send(Config.EmailServer, to, to + " " + UserTo + " " + UserFrom, Body);
+           client.Send(Config.EmailServer, to, to + "" + UserTo + " " + UserFrom, Body);       
 
-        { }
+
+
+        }
         // Current trips on route
 
         [HttpGet]
@@ -98,14 +205,14 @@ namespace RideSharing.Controllers
         // Current trips completed
 
         [HttpGet]
-        [Authorize(Roles = "Passenger")]
+     
         public async Task<ActionResult> Completed()
         {
             var user = User.Identity.GetUserId();
 
             var completed = db.Trips.Where(s => s.Status.Equals(TripStatus.Completed) && s.PassengerIdentity.Equals(user));
-
-            return View(await completed.ToListAsync());
+       
+            return View(GetReviewList(completed.ToList()));
         }
 
 
@@ -205,7 +312,6 @@ namespace RideSharing.Controllers
         }
 
         // GET: Orders/Details/5
-        [Authorize(Roles = "Passenger")]
         public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
@@ -221,7 +327,6 @@ namespace RideSharing.Controllers
         }
 
         // GET: Orders/Delete/5
-        [Authorize(Roles = "Passenger")]
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)

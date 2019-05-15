@@ -1,9 +1,7 @@
-﻿@model IEnumerable<RideSharing.Models.Trip>
-
+﻿@model IEnumerable<RideSharing.Models.TripModelView>
 @{
     ViewBag.Title = "Trips";
 }
-
 <h2>Index</h2>
 <p>
     @if (ViewData["Role"].ToString() == "Passenger")
@@ -13,6 +11,9 @@
 </p>
 <table class="table">
     <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TripId)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.TimeStamp)
         </th>
@@ -28,61 +29,161 @@
         <th>
             @Html.DisplayNameFor(model => model.Status)
         </th>
+        <th>
+            @if (ViewData["Role"].ToString() == "Passenger")
+            {
+                @Html.DisplayName("Driver")
+            }
+            @if (ViewData["Role"].ToString() == "Driver")
+            {
+                @Html.DisplayName("Passenger")
+            }
+        </th>
         <th></th>
     </tr>
-
-    @foreach (var item in Model)
+    @if (Model != null)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TimeStamp)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Commission)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OriginAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DestAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-
-
-            <td>
-                @*check the user role if the user is passenger he can edit , delete and see the details*@
-                @if ((string)ViewData["Role"] == "Passenger")
-                {
-                    @Html.ActionLink("  Edit", "Edit", new { id = item.TripId })
-                    @Html.ActionLink("  Details", "Details", new { id = item.TripId })
-                    @Html.ActionLink("  Delete", "Delete", new { id = item.TripId })
-                }
-                @*check the user role if the user is Driver he can  see the details only*@
-
-                @if ((string)ViewData["Role"] == "Driver")
-                {
-                    @Html.ActionLink("Details ", "Details", new { id = item.TripId })
-
-                    if (item.Status == RideSharing.Models.TripStatus.Active)
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TripId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TimeStamp)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Commission)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OriginAddress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DestAddress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @if (ViewData["Role"].ToString() == "Passenger")
                     {
-                        @Html.ActionLink(" Accept", "AcceptTrip", new { id = item.TripId })
-
+                        @Html.DisplayFor(modelItem => item.DriverIdentity)
                     }
-                    else if (item.Status == RideSharing.Models.TripStatus.Accepted)
+                    @if (ViewData["Role"].ToString() == "Driver")
                     {
-                        @Html.ActionLink(" Completed", "CompleteTrip", new { id = item.TripId })
+                        @Html.DisplayFor(modelItem => item.PassengerIdentity)
                     }
 
-                    else
-                    { }
+                </td>
+                <td>
+                    @*check the user role if the user is passenger he can edit , delete and see the details*@
+                    @if ((string)ViewData["Role"] == "Passenger")
+                    {
+                        @Html.ActionLink("  Edit", "Edit", new { id = item.TripId })
+                        @Html.ActionLink("  Details", "Details", new { id = item.TripId })
+                        @Html.ActionLink("  Delete", "Delete", new { id = item.TripId })
+                    }
 
-                }
+                    @*check the user role if the user is Driver he can  see the details only*@
+                    @if ((string)ViewData["Role"] == "Driver")
+                    {
+                        @Html.ActionLink("Details ", "Details", new { id = item.TripId })
+
+                        if (item.Status == RideSharing.Models.TripStatus.Active)
+                        {
+                            @Html.ActionLink(" Accept", "AcceptTrip", new { id = item.TripId })
+
+                        }
+                        else if (item.Status == RideSharing.Models.TripStatus.Accepted)
+                        {
+                            @Html.ActionLink(" Completed", "CompleteTrip", new { id = item.TripId })
+                        }
+
+                        else
+                        { }
+
+                    }
+
+                </td>
+
+                <td>
+
+                    @if (ViewData["Role"].ToString() == "Passenger")
+                    {
+                        if (item.Status == RideSharing.Models.TripStatus.Completed && item.TripReview != null && item.TripReview.PassengerIsReview == false)
+                        {
+                            <div class="form-group">
+                                <div class="col-md-10">
+
+                                    @using (Html.BeginForm("TripPassengerReview", "Trips", FormMethod.Post))
+                                    {
+
+                                        @Html.Hidden("TripReviewId", item.TripReview.TripReviewId)
+
+                                        <input class="form-control" id="Comment" name="Comment" type="text" value="">
+                                        <input type="submit" value="Submit comment " />
+
+                                    }
+
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                <div class="col-md-10">
+
+                                    @if (item.TripReview != null)
+                                    {
+                                        <div> @item.TripReview.PassengerReview </div>
+                                        <div> @item.TripReview.DriverReview </div>
+                                    }
+
+                                </div>
+                            </div>
+
+                        }
+                    }
+
+                    @if (ViewData["Role"].ToString() == "Driver")
+                    {
+
+                        if (item.Status == RideSharing.Models.TripStatus.Completed && item.TripReview != null && item.TripReview.DriverIsReview == false)
+                        {
+                            using (Html.BeginForm("TripDriverReview", "Trips", FormMethod.Post))
+                            {
+                                @Html.Hidden("TripReviewId", item.TripReview.TripReviewId)
+                                <input class="form-control" id="Comment" name="Comment" type="text" value="">
+                                <input type="submit" value="Submit comment " />
+
+                            }
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                <div class="col-md-10">
+
+                                    @if (item.TripReview != null)
+                                    {
+                                        <div>@item.TripReview.DriverReview</div>
+                                        <div>@item.TripReview.PassengerReview</div>
+                                    }
 
 
-            </td>
-        </tr>
+
+                                </div>
+                            </div>
+
+                        }
+                    }
+
+
+                </td>
+
+
+            </tr>
+        }
     }
-
 </table>
+
+

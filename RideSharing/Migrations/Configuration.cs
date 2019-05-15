@@ -9,7 +9,8 @@ namespace RideSharing.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;      
+            AutomaticMigrationDataLossAllowed = true;     // change to false when project finished 
         }
 
         protected override void Seed(RideSharing.Models.ApplicationDbContext context)

@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.28307.539
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RideSharing", "RideSharing\RideSharing.csproj", "{5E98941B-D863-4C60-9ED4-E2DABFEA1BED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestUnit", "TestUnit\TestUnit.csproj", "{63B24F46-3243-45A8-8179-2D85991A181B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{5E98941B-D863-4C60-9ED4-E2DABFEA1BED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E98941B-D863-4C60-9ED4-E2DABFEA1BED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E98941B-D863-4C60-9ED4-E2DABFEA1BED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63B24F46-3243-45A8-8179-2D85991A181B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63B24F46-3243-45A8-8179-2D85991A181B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63B24F46-3243-45A8-8179-2D85991A181B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63B24F46-3243-45A8-8179-2D85991A181B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
