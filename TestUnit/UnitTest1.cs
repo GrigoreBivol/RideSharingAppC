@@ -8,6 +8,9 @@ namespace TestUnit
     [TestClass]
     public class UnitTest1
     {
+
+        //test github 8 Jun 
+
         private ApplicationDbContext db = new ApplicationDbContext();
         [TestMethod]
         public void AddTrip()
